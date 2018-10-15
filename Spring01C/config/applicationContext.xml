@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+
+
+	<bean id="user1" class="com.alex.spring.User">
+		<property name="name" value="alex"></property>
+		<property name="id" value="1001"></property>
+
+	</bean>
+	<bean id="user2" class="com.alex.spring.User">
+		<property name="name" value="shalu"></property>
+		<property name="id" value="1002"></property>
+
+	</bean>
+
+
+	<bean id="department" class="com.alex.spring.Department">
+		<property name="id" value="0001"></property>
+		<property name="name" value="科技研发部"></property>
+		<property name="user" ref="user1"></property>
+		<property name="userlist" ref="userlist1"></property>
+		<property name="usermap" ref="usermap1"></property>
+
+
+	</bean>
+
+	<util:list id="userlist1">
+		<ref bean="user1" />
+		<ref bean="user2" />
+
+	</util:list>
+
+	<util:map id="usermap1">
+
+		<entry key="alex" value-ref="user1">
+		</entry>
+		<entry key="shalu" value-ref="user2"></entry>
+
+	</util:map>
+
+
+</beans>
