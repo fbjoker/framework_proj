@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+
+<context:component-scan base-package="com.alex"></context:component-scan>
+<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+
+<aop:config>
+<aop:pointcut expression="execution(* com.alex.aspect.xml.*.*(..))" id="mypointcut"/>
+<aop:aspect ref="myaspectj" order="22">
+<aop:before method="beforeMethod" pointcut-ref="mypointcut"/>
+
+<aop:after method="afterMethod"  pointcut-ref="mypointcut"/>
+<aop:after-returning method="returnMethod" pointcut-ref="mypointcut" returning="res"/>
+</aop:aspect>
+
+</aop:config>
+</beans>
