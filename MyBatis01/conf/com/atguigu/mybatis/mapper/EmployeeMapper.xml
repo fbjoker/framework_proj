@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- SQL映射文件  : 编写增删改查的SQL语句 
+	 namespace: 
+	 		1. 随便写
+	 		2. Mapper接口开发	
+-->
+
+<mapper namespace="com.atguigu.mybatis.mapper.EmployeeMapper">
+    
+	<!-- 
+		<select>: 定义查询的SQL语句
+			id : 唯一标识
+			resultType:  结果集的封装类型
+			#{id}:  获取参数值
+	 -->
+	<select id="selectEmployee" resultType="com.atguigu.mybatis.beans.Employee">
+		select id, last_name  lastName ,email ,gender from tbl_employee where id = #{id}
+		<!-- select * from  tbl_employee where id = #{id} -->
+	</select>
+	
+	<!-- public Employee selectEmployeeById(Integer id ); -->
+	<select id="selectEmployeeById" parameterType="java.lang.Integer" resultType="com.atguigu.mybatis.beans.Employee">
+		select id, last_name  ,email ,gender from tbl_employee where id = #{id}
+	</select>
+	
+	<!-- public void insertEmployee(Employee employee); 
+		
+		 返回主键值:
+		 		useGeneratedKeys =true  : 使用自增主键
+		 		keyProperty:  使用对象的哪个属性保存返回的主键值.
+	
+	-->
+	<insert id="insertEmployee" parameterType="com.atguigu.mybatis.beans.Employee"  
+		useGeneratedKeys="true"  keyProperty="id">
+		insert into tbl_employee(last_name,email,gender) values(#{lastName},#{email},#{gender})
+	</insert>
+	
+	<!-- public void updateEmployee(Employee employee); -->
+	<update id="updateEmployee" >
+		update tbl_employee set  
+			last_name = #{lastName},
+			email = #{email},
+			gender = #{gender} 
+		where id = #{id}
+	</update>
+	
+	<!-- public void deleteEmployeeById(Integer id ); -->
+	<delete id="deleteEmployeeById">
+		delete from tbl_employee where id = #{id}
+	</delete>
+	
+</mapper>
