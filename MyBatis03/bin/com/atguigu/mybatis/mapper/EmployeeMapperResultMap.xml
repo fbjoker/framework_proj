@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.atguigu.mybatis.mapper.EmployeeMapperResultMap">
+    
+	<!-- public Employee selectEmployeeAndDeptById(Integer id ); -->
+	<select id="selectEmployeeAndDeptById" resultMap="myEmpAndDept">
+		select e.id eid, e.last_name,e.email,e.gender ,d.id did , d.dept_name
+		from tbl_employee e , tbl_dept d 
+		where e.d_id = d.id  and e.id = #{id}
+	</select>
+	
+	<!-- 
+	 eid  last_name     email           gender     did    dept_name  
+      8     许刚           xg@atguigu.com         1       104     影视部  
+	 -->
+	<!-- 
+		type: 结果集的封装类型·
+		<id>: 完成主键列的映射
+			column: 指定结果集的列名
+			property:指定对象的属性名
+		<result>:完成普通列的映射
+	 -->
+	<resultMap type="com.atguigu.mybatis.beans.Employee" id="myEmpAndDept">
+		<id column="eid" property="id" />
+		<result column="last_name" property="lastName"/>
+		<result column="email" property="email"/>
+		<result column="gender" property="gender"/>
+		<!-- 级联属性 
+		<result column="did" property="dept.id"/>
+		<result column="dept_name" property="dept.deptName"/>
+		-->
+		
+		<!-- 
+			association:联合 关联
+				property:指定关联属性名
+				javaType:指定关联属性的类型	
+		 -->
+		<association property="dept" javaType="com.atguigu.mybatis.beans.Department">
+			<id column="did" property="id"/>
+			<result column="dept_name" property="deptName"/>
+		</association>
+	</resultMap>
+	
+	
+	<!-- 
+		assocation分步查询:
+			需求:查询员工信息 并且查询员工所在的部门信息
+			分步:
+				1. 先根据员工的id查询员工信息                   查员工
+				2. 根据查到的外键 d_id  查询部门信息       查部门
+	 -->
+	 
+	 <!-- 	public Employee selectEmployeeAndDeptByIdStep(Integer id ); -->
+	 
+	 <select id="selectEmployeeAndDeptByIdStep" resultMap="myEmpAndDeptStep">
+	 	select id, last_name,email,gender,d_id from tbl_employee where id = #{id}
+	 </select>
+	 <resultMap type="com.atguigu.mybatis.beans.Employee" id="myEmpAndDeptStep">
+	 	<id column="id" property="id"/>
+	 	<result column="last_name" property="lastName"/>
+	 	<result column="email" property="email"/>
+	 	<result column="gender" property="gender"/>
+	 	
+	 	<!-- 分步查询 
+	 		select: 指定要调用的查询
+	 		column: 指定将结果集中哪一列的值传递给查询语句
+	 	-->
+	 	<association property="dept" 
+	 		select="com.atguigu.mybatis.mapper.DepartmentMapperResultMap.selectDepartmentById"
+	 		column="d_id"
+	 	>
+	 	</association>
+	 </resultMap>
+	 
+	 
+	 <!-- assocation分步查询使用延迟加载(懒加载):
+	 			
+	 
+	  -->
+	
+	
+</mapper>

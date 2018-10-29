@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!-- MyBatis 的全局配置文件 -->
+<configuration>
+
+	<!-- 
+		1.  properties 
+				resource: 从类路径下引入属性文件
+				url:      从网络路径或者是磁盘路径下引入属性文件
+	 -->
+	 <properties resource="db.properties" >
+	 	<!-- <property name="jdbc.driver" value="com.mysql.jdbc.Driver"/> -->
+	 </properties>
+	 
+	 <!-- 2. settings -->
+	 <settings>
+	 	<!-- 映射下划线到驼峰命名      last_name ==> lastName -->
+	 	<setting name="mapUnderscoreToCamelCase" value="true"/>
+	 	
+	 	<!-- 开启延迟加载 -->
+	 	<setting name="lazyLoadingEnabled" value="true"/>
+	 	<!-- 配置 按需加载  还是全部加载 -->
+	 	<setting name="aggressiveLazyLoading" value="false"/>
+	 </settings>
+	 
+	 <!-- 3. typeAliases 
+	 			typeAlias: 给单个的java类型取别名
+	 				type : 指定java的全类名
+	 				alias: 指定别名， 如果不指定，默认是类名， 不区分大小写.
+	 			package： 为指定包以及子包下的类取默认的别名
+	 					 如果出现别名冲突的情况， 可以使用@Alias来具体指定别名.
+	 -->
+	 <typeAliases>
+	 	<!-- <typeAlias type="com.atguigu.mybatis.beans.Employee" /> -->
+	 	<package name="com.atguigu.mybatis.beans"/>
+	 </typeAliases>
+		 
+	
+	<!-- 
+		4. environments 数据库的连接环境
+				default : 指定当前使用的环境
+				<transactionManager>:  事务管理
+					JDBC :     JdbcTransactionFactory
+					MANAGED :  ManagedTransactionFactory
+					最终: 事务管理交给Spring. 
+				<dataSource>: 数据源
+					UNPOOLED:UnpooledDataSourceFactory
+					POOLED  :PooledDataSourceFactory
+					JNDI    :JndiDataSourceFactory
+					最终: 数据源交给Spring
+					
+	 -->
+	<environments default="development">
+		<!-- 具体的连接环境 -->
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${jdbc.driver}" />
+				<property name="url" value="${jdbc.url}" />
+				<property name="username" value="${jdbc.username}" />
+				<property name="password" value="${jdbc.password}" />
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<!-- 5. mappers  引入SQL映射文件 
+				mapper:  引入单个的映射文件
+				
+				package: 批量引入指定包下的映射文件
+					          要求: Mapper接口 与 SQL映射文件必须同名同位置.  
+	-->
+	
+	<mappers>
+		<!-- <mapper resource="EmployeeMapper.xml" /> -->
+		<package name="com.atguigu.mybatis.mapper"/>
+	</mappers>
+	
+</configuration>
