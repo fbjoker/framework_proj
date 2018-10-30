@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.alex.mapper.UserResultMapper">
+
+
+
+	<select id="findUserByIdassosiationstep" resultMap="find3">
+		SELECT u.`id`,u.`username`,u.`password`,u.`email`, u.d_id FROM bs_user u where u.id=#{id};
+
+	</select>
+
+	<resultMap type="com.alex.bean.User" id="find3">
+		<id column="id" property="id" />
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+		<result column="email" property="email" />
+
+		<association property="dept" 
+		select="com.alex.mapper.DepartmentResultMapper.findByIdone"
+		column="d_id"
+		>
+
+		</association>
+
+
+
+	</resultMap>
+
+
+
+
+
+
+
+
+
+	<select id="findUserByIdassosiation" resultMap="find2">
+		SELECT u.`id`
+		,u.`username`,u.`password`,u.`email`,u.`d_id`,d.`dept_name`
+		FROM bs_user u ,bs_dept d WHERE u.d_id=d.id AND u.id=#{id};
+
+	</select>
+
+	<resultMap type="com.alex.bean.User" id="find2">
+		<id column="id" property="id" />
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+		<result column="email" property="email" />
+
+		<association property="dept" javaType="com.alex.bean.Department">
+
+			<id column="d_id" property="id" />
+			<result column="dept_name" property="deptName" />
+
+		</association>
+
+
+
+	</resultMap>
+	<select id="findUserById" resultMap="find1">
+		SELECT u.`id`
+		,u.`username`,u.`password`,u.`email`,u.`d_id`,d.`dept_name`
+		FROM bs_user u ,bs_dept d WHERE u.d_id=d.id AND u.id=#{id};
+
+	</select>
+
+	<resultMap type="com.alex.bean.User" id="find1">
+		<id column="id" property="id" />
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+		<result column="d_id" property="dept.id" />
+		<result column="dept_name" property="dept.deptName" />
+
+
+
+	</resultMap>
+
+
+	<select id="findUserByIdone" resultType="com.alex.bean.User">
+		select id ,username, password ,email from bs_user where id=#{id}
+
+	</select>
+	<select id="findUserBydid" resultType="com.alex.bean.User">
+		select id ,username, password ,email from bs_user where d_id=#{did}
+
+	</select>
+
+</mapper>

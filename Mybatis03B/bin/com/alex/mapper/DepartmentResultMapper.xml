@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.alex.mapper.DepartmentResultMapper">
+
+	<select id="findByIdone" resultType="com.alex.bean.Department">
+		select id ,dept_name from bs_dept where id =#{id}
+
+	</select>
+
+
+	<select id="findById" resultMap="result1">
+		SELECT u.`id` ,u.`username`,u.`password`,u.`email`,u.`d_id`,d.`dept_name`
+		FROM bs_user u ,bs_dept d WHERE u.`d_id`=d.`id` AND d.`id`=#{id};
+
+	</select>
+
+	<resultMap type="com.alex.bean.Department" id="result1">
+		<id column="d_id" property="id" />
+		<result column="dept_name" property="deptName" />
+
+		<collection property="user" ofType="com.alex.bean.User">
+			<id column="id" property="id" />
+			<result column="username" property="username" />
+			<result column="password" property="password" />
+			<result column="email" property="email" />
+
+
+		</collection>
+
+
+	</resultMap>
+	
+	<select id="findByIdassociation" resultMap="result2">
+		SELECT d.`id`,d.`dept_name`
+		FROM bs_dept d WHERE  d.`id`=#{id};
+
+	</select>
+
+	<resultMap type="com.alex.bean.Department" id="result2">
+		<id column="id" property="id" />
+		<result column="dept_name" property="deptName" />
+
+		<collection property="user" 
+		select="com.alex.mapper.UserResultMapper.findUserBydid"
+		column="id">
+			
+
+
+		</collection>
+
+
+	</resultMap>
+
+
+</mapper>

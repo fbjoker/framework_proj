@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.alex.mapper.UserMapper">
+
+	<insert id="addUser" useGeneratedKeys="true" keyProperty="id">
+		insert into bs_user (username,password,email) values(#{username},#{password},#{email})
+	</insert>
+	
+	
+	<delete id="deleteUserById">
+	delete from bs_user where id=#{id}
+	</delete>
+	<update id="updateUser">
+	update bs_user set username=#{username},password=#{password},email=#{email} where id=#{id}
+	</update>
+	<select id="quaryUserById" resultType="com.alex.bean.User">
+	select id , username, password, email from bs_user where id=#{id}
+	</select>
+	
+	<select id="quaryUserByIdAndUsername" resultType="com.alex.bean.User">
+	select id , username, password, email from bs_user where id=#{id} and username=#{username}
+	</select>
+	
+	<select id="findall" resultType="com.alex.bean.User">
+	select  id , username, password, email, d_id from bs_user
+	</select>
+	<select id="slectUserByIdtomap" resultType="map">
+	select  id , username, password, email, d_id from bs_user where id=#{id}
+	</select>
+	
+	<select id="findalltomap" resultType="com.alex.bean.User">
+	select  id , username, password, email, d_id from bs_user
+	</select>
+	
+
+</mapper>
+
